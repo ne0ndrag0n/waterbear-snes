@@ -25,7 +25,7 @@ Start:
 		; Remember that in the default map, all entries point to tile #0
 		lda #$80
 		sta $2115
-		ldx #$0401
+		ldx #$0400
 		stx $2116
 		lda #$01
 		sta $2118
