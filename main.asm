@@ -2,6 +2,7 @@
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
 .INCLUDE "macros.asm"
+.INCLUDE "ppu.inc"
 
 ;========================
 ; Start
@@ -18,18 +19,35 @@ Start:
 		LoadPalette BG_Palette, 0, 4
 
 		; Load Tile data to VRAM
-		LoadBlockToVRAM Tiles, $0000, $0020	; 2 tiles, 2bpp, = 32 bytes
+		LoadBlockToVRAM Tiles, $0000, $0030	; 2 tiles, 2bpp, = 32 bytes
 
 		; Now, load up some data into our tile map
 		; (If you had an full map, you could use LoadBlockToVRAM)
 		; Remember that in the default map, all entries point to tile #0
-		lda #$80
-		sta $2115
-		ldx #$0400
-		stx $2116
-		lda #$01
-		sta $2118
 
+		;===
+		; Increment when $2119 is accessed. Increment by one word.
+		;===
+		lda #$80
+		sta PPU_PORT_SETTINGS
+
+		;===
+		; Set VRAM upload address to $0400.
+		;===
+		ldx #$0400
+		stx PPU_VRAM_ADDRESS
+
+		;===
+		; Write $01 to VRAM data input port.
+		;===
+		lda #$01
+		sta PPU_VRAM_DATA
+
+		; Go ahead and write another tile
+		ldx #$0401
+		stx PPU_VRAM_ADDRESS
+		lda #$02
+		sta PPU_VRAM_DATA
 
 		; Setup Video modes and other stuff, then turn on the screen
 		jsr SetupVideo
@@ -48,22 +66,22 @@ SetupVideo:
     php
 
     lda #$00
-    sta $2105           ; Set Video mode 0, 8x8 tiles, 4 color BG1/BG2/BG3/BG4
+    sta PPU_SCREEN_MODE           	; Set Video mode 0, 8x8 tiles, 4 color BG1/BG2/BG3/BG4
 
-    lda #$04            ; Set BG1's Tile Map offset to $0400 (Word address)
-    sta $2107           ; And the Tile Map size to 32x32
+    lda #$04						; Set BG1's Tile Map offset to $0400 (Word address)
+    sta PPU_TILEMAP_ADDR_BG1		; And the Tile Map size to 32x32
 
-    stz $210B           ; Set BG1's Character VRAM offset to $0000 (word address)
+    stz PPU_CHAR_ADDR_BG12			; Set BG1's Character VRAM offset to $0000 (word address)
 
-    lda #$01            ; Enable BG1
-    sta $212C
+    lda #$01						; Enable BG1
+    sta PPU_TILE_SPR_CONTROL
 
     lda #$FF
-    sta $210E
-    sta $210E
+    sta PPU_VSCROLL_BG1
+    sta PPU_VSCROLL_BG1
 
     lda #$0F
-    sta $2100           ; Turn on screen, full Brightness
+    sta PPU_SCREEN_DISPLAY			; Turn on screen, full Brightness
 
     plp
     rts
