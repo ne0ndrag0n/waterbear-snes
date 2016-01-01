@@ -7,9 +7,12 @@
 ; DESCRIPTION: PPU Macros and
 ; subroutines.
 ; ===============================
+.IFNDEF PPU_S
+.DEFINE PPU_S
 .INCLUDE "base.inc"
 .INCLUDE "ppu.inc"
 .INCLUDE "dma.inc"
+
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams
@@ -232,3 +235,5 @@ PPU_LoadVRAM:
     plp         ; restore registers
     plb
     rts         ; return
+
+.ENDIF
