@@ -28,23 +28,15 @@ Start:
 		; Increment when $2119 is accessed. Increment by one word.
 		PPU_SetVRAMWriteParams TRUE, PPU_IncRate_1x1
 
-		;===
 		; Set VRAM upload address to $0400.
-		;===
-		ldx #$0400
-		stx PPU_VRAM_ADDRESS
+		PPU_SetVRAMAddress $0400
 
-		;===
 		; Write $01 to VRAM data input port.
-		;===
-		lda #$01
-		sta PPU_VRAM_DATA
+		PPU_WriteVRAM FALSE, $01
 
 		; Go ahead and write another tile
-		ldx #$0401
-		stx PPU_VRAM_ADDRESS
-		lda #$02
-		sta PPU_VRAM_DATA
+		PPU_SetVRAMAddress $0401
+		PPU_WriteVRAM FALSE, $02
 
 		; Setup Video modes and other stuff, then turn on the screen
 		jsr SetupVideo
