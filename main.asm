@@ -18,7 +18,7 @@ Start:
 		PPU_LoadPalette BG_Palette, 0, 4
 
 		; Load Tile data to VRAM
-		PPU_LoadBlockToVRAM Tiles, $0000, $0030
+		PPU_LoadBlockToVRAM Tiles, $0000, 2, 3
 
 		; Now, load up some data into our tile map
 		; (If you had an full map, you could use LoadBlockToVRAM)

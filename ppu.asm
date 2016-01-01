@@ -9,6 +9,7 @@
 ; ===============================
 .INCLUDE "base.inc"
 .INCLUDE "ppu.inc"
+.INCLUDE "dma.inc"
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams
@@ -159,17 +160,17 @@
 ;----------------------------------------------------------------------------
 PPU_DMAPalette:
     phb
-    php         ; Preserve Registers
+    php         					; Preserve Registers
 
-    stx $4302   ; Store data offset into DMA source offset
-    sta $4304   ; Store data bank into DMA source bank
-    sty $4305   ; Store size of data block
+    stx DMA_SOURCE_ADDR_CHANNEL_0   ; Store data offset into DMA source offset
+    sta DMA_SOURCE_BANK_CHANNEL_0	; Store data bank into DMA source bank
+    sty DMA_XFER_SIZE_CHANNEL_0		; Store size of data block
 
-    stz $4300   ; Set DMA Mode (byte, normal increment)
-    lda #$22    ; Set destination register ($2122 - CGRAM Write)
-    sta $4301
-    lda #$01    ; Initiate DMA transfer
-    sta $420B
+    stz DMA_CONTROL_CHANNEL_0		; Set DMA Mode (byte, normal increment)
+    lda #$22    					; Set destination register ($2122 - CGRAM Write)
+    sta DMA_DESTINATION_ADDR_CHANNEL_0
+    lda #DMA_CHANNEL_0				; Initiate DMA transfer
+    sta DMA_START_XFER
 
     plp
     plb
@@ -180,7 +181,8 @@ PPU_DMAPalette:
 ;----------------------------------------------------------------------------
 ; In: sourceAddress -- 24 bit address of source data
 ;     destination   -- VRAM address to write to (WORD address!!)
-;     size			-- number of BYTEs to copy
+;     numTiles		-- number of tiles in this block
+;	  bitsPerPixel	-- the BPP of each block
 ;----------------------------------------------------------------------------
 ; Out: None
 ;----------------------------------------------------------------------------
@@ -188,15 +190,15 @@ PPU_DMAPalette:
 ;----------------------------------------------------------------------------
 ;LoadBlockToVRAM SRC_ADDRESS, DEST, SIZE
 ;   requires:  mem/A = 8 bit, X/Y = 16 bit
-.MACRO PPU_LoadBlockToVRAM ARGS sourceAddress, destination, size
+.MACRO PPU_LoadBlockToVRAM ARGS sourceAddress, destination, numTiles, bitsPerPixel
     lda #$80
-    sta $2115       ; Set VRAM transfer mode to word-access, increment by 1
+    sta PPU_PORT_SETTINGS       			; Set VRAM transfer mode to word-access, increment by 1
 
-    ldx #destination         ; DEST
-    stx $2116       		 ; $2116: Word address for accessing VRAM.
-    lda #:sourceAddress      ; SRCBANK
-    ldx #sourceAddress       ; SRCOFFSET
-    ldy #size         		 ; SIZE
+    ldx #destination         				; DEST
+    stx PPU_VRAM_ADDRESS	 				; $2116: Word address for accessing VRAM.
+    lda #:sourceAddress      				; SRCBANK
+    ldx #sourceAddress       				; SRCOFFSET
+    ldy #( 8 * bitsPerPixel * numTiles )  	; SIZE
     jsr PPU_LoadVRAM
 .ENDM
 
@@ -216,16 +218,16 @@ PPU_LoadVRAM:
     phb
     php         ; Preserve Registers
 
-    stx $4302   ; Store Data offset into DMA source offset
-    sta $4304   ; Store data Bank into DMA source bank
-    sty $4305   ; Store size of data block
+    stx DMA_SOURCE_ADDR_CHANNEL_0   ; Store Data offset into DMA source offset
+    sta DMA_SOURCE_BANK_CHANNEL_0   ; Store data Bank into DMA source bank
+    sty DMA_XFER_SIZE_CHANNEL_0     ; Store size of data block
 
     lda #$01
-    sta $4300   ; Set DMA mode (word, normal increment)
-    lda #$18    ; Set the destination register (VRAM write register)
-    sta $4301
-    lda #$01    ; Initiate DMA transfer (channel 1)
-    sta $420B
+    sta DMA_CONTROL_CHANNEL_0	    ; Set DMA mode (word, normal increment)
+    lda #$18    					; Set the destination register (VRAM write register)
+    sta DMA_DESTINATION_ADDR_CHANNEL_0
+    lda #DMA_CHANNEL_0				; Initiate DMA transfer (channel 1)
+    sta DMA_START_XFER
 
     plp         ; restore registers
     plb

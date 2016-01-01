@@ -4,12 +4,10 @@
 ; (c) 2015 oaktree Novelties
 ;
 ; FILE: ppu.inc
-
-.IFNDEF PPU_H
-.DEFINE PPU_H
-
 ; DESCRIPTION: PPU includes
 ; ===============================
+.IFNDEF PPU_H
+.DEFINE PPU_H
 
 ; PPU Screen Display Register
 ; Accepts 1 byte
