@@ -1,7 +1,6 @@
 ;== Include memorymap, header info, and SNES initialization routines
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
-.INCLUDE "macros.asm"
 .INCLUDE "ppu.asm"
 
 ;========================
@@ -16,10 +15,10 @@ Start:
         InitSNES            ; Init Snes :)
 
 		; Load Palette for our tiles
-		LoadPalette BG_Palette, 0, 4
+		PPU_LoadPalette BG_Palette, 0, 4
 
 		; Load Tile data to VRAM
-		LoadBlockToVRAM Tiles, $0000, $0030	; 2 tiles, 2bpp, = 32 bytes
+		PPU_LoadBlockToVRAM Tiles, $0000, $0030
 
 		; Now, load up some data into our tile map
 		; (If you had an full map, you could use LoadBlockToVRAM)
@@ -54,11 +53,12 @@ forever:
 SetupVideo:
     php
 
-    lda #$00
-    sta PPU_SCREEN_MODE           	; Set Video mode 0, 8x8 tiles, 4 color BG1/BG2/BG3/BG4
+    ; Set Video mode 0, 8x8 tiles, 4 color BG1/BG2/BG3/BG4
+    PPU_SetScreenMode PPU_Mode_0, FALSE, FALSE, FALSE, FALSE, FALSE
 
-    lda #$04						; Set BG1's Tile Map offset to $0400 (Word address)
-    sta PPU_TILEMAP_ADDR_BG1		; And the Tile Map size to 32x32
+    ; Set BG1's Tile Map offset to $0400 (Word address)
+    ; And the Tile Map size to 32x32
+    PPU_SetTileMapAddr $01, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
 
     stz PPU_CHAR_ADDR_BG12			; Set BG1's Character VRAM offset to $0000 (word address)
 

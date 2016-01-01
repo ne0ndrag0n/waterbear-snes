@@ -62,9 +62,28 @@
 
 ; ============= Constants/Enumerations =============
 
+.define		PPU_BG1					$01
+.define		PPU_BG2					$02
+.define		PPU_BG3					$03
+.define		PPU_BG4					$04
+
 .define		PPU_IncRate_1x1			$00
 .define		PPU_IncRate_32x32		$01
 .define		PPU_IncRate_64x64		$02
 .define		PPU_IncRate_128x128		$03
+
+.define		PPU_Mode_0				$00
+.define		PPU_Mode_1				$01
+.define		PPU_Mode_2				$02
+.define		PPU_Mode_3				$03
+.define		PPU_Mode_4				$04
+.define		PPU_Mode_5				$05
+.define		PPU_Mode_6				$06
+.define		PPU_Mode_7				$07
+
+.define		PPU_TileMapSize_32x32	$00
+.define		PPU_TileMapSize_64x32	$01
+.define		PPU_TileMapSize_32x64	$02
+.define		PPU_TileMapSize_64x64	$03
 
 .ENDIF
