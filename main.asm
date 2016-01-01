@@ -2,7 +2,7 @@
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
 .INCLUDE "macros.asm"
-.INCLUDE "ppu.inc"
+.INCLUDE "ppu.asm"
 
 ;========================
 ; Start
@@ -25,11 +25,8 @@ Start:
 		; (If you had an full map, you could use LoadBlockToVRAM)
 		; Remember that in the default map, all entries point to tile #0
 
-		;===
 		; Increment when $2119 is accessed. Increment by one word.
-		;===
-		lda #$80
-		sta PPU_PORT_SETTINGS
+		PPU_SetVRAMWriteParams TRUE, PPU_IncRate_1x1
 
 		;===
 		; Set VRAM upload address to $0400.

@@ -55,3 +55,10 @@
 ; PPU Tile & Sprite Visibility Control
 ; Accepts 1 byte
 .define		PPU_TILE_SPR_CONTROL	$212C
+
+; ============= Constants/Enumerations =============
+
+.define		PPU_IncRate_1x1			$00
+.define		PPU_IncRate_32x32		$01
+.define		PPU_IncRate_64x64		$02
+.define		PPU_IncRate_128x128		$03
