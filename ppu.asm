@@ -9,10 +9,10 @@
 ; ===============================
 .IFNDEF PPU_S
 .DEFINE PPU_S
+
 .INCLUDE "base.inc"
 .INCLUDE "ppu.inc"
 .INCLUDE "dma.inc"
-
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams
@@ -120,13 +120,63 @@
 ;
 ; Description: Sets the origin addr of character data (the tiles themselves)
 ; 			   for a background layer.
+;
+;			   This macro is a bit screwy for its side effects. Consider
+;			   using these operations directly.
 ; Author: Ash
 ;----------------------------------------------------------------------------
-; In:
+; In: bgLayer		--	PPU_BG1 through PPU_BG4. These are set as package
+;						deals. BG1/BG2 and BG3/4 will be loaded on the same
+;						register; the one you do not specify will be zero.
+;	  addr			--	The VRAM address, in multiples of $1000. 1 is $1000,
+;						etc.
 ;----------------------------------------------------------------------------
-; Modifies:
+; Modifies: A
 ;----------------------------------------------------------------------------
+.MACRO PPU_SetCharAddr ARGS bgLayer, addr
+	.IF bgLayer == PPU_BG1
+		lda #addr
+		sta PPU_CHAR_ADDR_BG12
+	.ELSE
+		.IF bgLayer == PPU_BG2
+			lda #( addr << 4 )
+			sta PPU_CHAR_ADDR_BG12
+		.ELSE
+			.IF bgLayer == PPU_BG3
+				lda #addr
+				sta PPU_CHAR_ADDR_BG34
+			.ELSE
+				.IF bgLayer == PPU_BG4
+					lda #( addr << 4 )
+					sta PPU_CHAR_ADDR_BG34
+				.ELSE
+					.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
+					.FAIL
+				.ENDIF
+			.ENDIF
+		.ENDIF
+	.ENDIF
+.ENDM
 
+;============================================================================
+; PPU_SetSpriteAndTileLayers
+;
+; Description: Adjusts main screen designation register to toggle sprites
+;			   and tile backgrounds.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: spritesEnabled  -- If TRUE, display sprites.
+;	  BG1Enabled	  --
+;	  BG2Enabled	  --
+;	  BG3Enabled	  --
+;	  BG4Enabled	  -- If TRUE for each, enable the layers.
+;----------------------------------------------------------------------------
+; Modifies: A
+;----------------------------------------------------------------------------
+.MACRO PPU_SetSpriteAndTileLayers ARGS spritesEnabled, BG1Enabled, BG2Enabled, BG3Enabled, BG4Enabled
+	lda #( ( spritesEnabled << 4 ) | ( BG4Enabled << 3 ) | ( BG3Enabled << 2 ) | ( BG2Enabled << 1 ) | BG1Enabled )
+	sta PPU_TILE_SPR_CONTROL
+.ENDM
 
 ;============================================================================
 ; PPU_LoadPalette - Macro that loads palette information into CGRAM

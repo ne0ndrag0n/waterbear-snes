@@ -60,10 +60,9 @@ SetupVideo:
     ; And the Tile Map size to 32x32
     PPU_SetTileMapAddr $01, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
 
-    stz PPU_CHAR_ADDR_BG12			; Set BG1's Character VRAM offset to $0000 (word address)
+    PPU_SetCharAddr PPU_BG1, $00    ; Set BG1's Character VRAM offset to $0000 (word address)
 
-    lda #$01						; Enable BG1
-    sta PPU_TILE_SPR_CONTROL
+    PPU_SetSpriteAndTileLayers FALSE, TRUE, FALSE, FALSE, FALSE 	; Enable BG1
 
     lda #$FF
     sta PPU_VSCROLL_BG1
