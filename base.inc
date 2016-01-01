@@ -7,5 +7,10 @@
 ; DESCRIPTION: Base-level incs
 ; ===============================
 
+.IFNDEF BASE_H
+.DEFINE BASE_H
+
 .define		TRUE		$01
 .define		FALSE		$00
+
+.ENDIF

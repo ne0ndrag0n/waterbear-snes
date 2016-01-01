@@ -4,6 +4,10 @@
 ; (c) 2015 oaktree Novelties
 ;
 ; FILE: ppu.inc
+
+.IFNDEF PPU_H
+.DEFINE PPU_H
+
 ; DESCRIPTION: PPU includes
 ; ===============================
 
@@ -62,3 +66,5 @@
 .define		PPU_IncRate_32x32		$01
 .define		PPU_IncRate_64x64		$02
 .define		PPU_IncRate_128x128		$03
+
+.ENDIF
