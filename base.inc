@@ -13,4 +13,7 @@
 .define		TRUE		$01
 .define		FALSE		$00
 
+.define		BYTE_ZERO	$00
+.define		WORD_ZERO	$0000
+
 .ENDIF

@@ -13,6 +13,7 @@
 .INCLUDE "base.inc"
 .INCLUDE "ppu.inc"
 .INCLUDE "dma.inc"
+.INCLUDE "base.asm"
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams
@@ -30,8 +31,7 @@
 .MACRO PPU_SetVRAMWriteParams ARGS incOnHigh, incRate
 	; top bit determines increment on high or low VRAM word.
 	; bottom two bits determine the increment rate
-	lda #( ( incOnHigh << 7 ) | incRate )
-	sta PPU_PORT_SETTINGS
+	StoreByte ( ( incOnHigh << 7 ) | incRate ), PPU_PORT_SETTINGS
 .ENDM
 
 ;============================================================================
@@ -46,8 +46,7 @@
 ; Modifies: X
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetVRAMAddress ARGS address
-	ldx #address
-	stx PPU_VRAM_ADDRESS
+	StoreWordX address, PPU_VRAM_ADDRESS
 .ENDM
 
 ;============================================================================
@@ -65,11 +64,9 @@
 ;----------------------------------------------------------------------------
 .MACRO PPU_WriteVRAM ARGS word, data
 	.IF word == TRUE
-		ldx #data
-		stx PPU_VRAM_DATA
+		StoreWordX data, PPU_VRAM_DATA
 	.ELSE
-		lda #data
-		sta PPU_VRAM_DATA
+		StoreByte data, PPU_VRAM_DATA
 	.ENDIF
 .ENDM
 
@@ -91,8 +88,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetScreenMode ARGS screenMode, mode1BG3Highest, doubleTileBG1, doubleTileBG2, doubleTileBG3, doubleTileBG4
-	lda #( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode )
-	sta PPU_SCREEN_MODE
+	StoreByte ( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode ), PPU_SCREEN_MODE
 .ENDM
 
 ;============================================================================
@@ -111,8 +107,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO	PPU_SetTileMapAddr ARGS tileMapOrigin, mapSize, bgPlane
-	lda #( ( tileMapOrigin << 2 ) | mapSize )
-	sta	bgPlane
+	StoreByte ( ( tileMapOrigin << 2 ) | mapSize ), bgPlane
 .ENDM
 
 ;============================================================================
@@ -135,20 +130,16 @@
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetCharAddr ARGS bgLayer, addr
 	.IF bgLayer == PPU_BG1
-		lda #addr
-		sta PPU_CHAR_ADDR_BG12
+		StoreByte addr, PPU_CHAR_ADDR_BG12
 	.ELSE
 		.IF bgLayer == PPU_BG2
-			lda #( addr << 4 )
-			sta PPU_CHAR_ADDR_BG12
+			StoreByte ( addr << 4 ), PPU_CHAR_ADDR_BG12
 		.ELSE
 			.IF bgLayer == PPU_BG3
-				lda #addr
-				sta PPU_CHAR_ADDR_BG34
+				StoreByte addr, PPU_CHAR_ADDR_BG34
 			.ELSE
 				.IF bgLayer == PPU_BG4
-					lda #( addr << 4 )
-					sta PPU_CHAR_ADDR_BG34
+					StoreByte ( addr << 4 ), PPU_CHAR_ADDR_BG34
 				.ELSE
 					.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
 					.FAIL
@@ -174,8 +165,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetSpriteAndTileLayers ARGS spritesEnabled, BG1Enabled, BG2Enabled, BG3Enabled, BG4Enabled
-	lda #( ( spritesEnabled << 4 ) | ( BG4Enabled << 3 ) | ( BG3Enabled << 2 ) | ( BG2Enabled << 1 ) | BG1Enabled )
-	sta PPU_TILE_SPR_CONTROL
+	StoreByte ( ( spritesEnabled << 4 ) | ( BG4Enabled << 3 ) | ( BG3Enabled << 2 ) | ( BG2Enabled << 1 ) | BG1Enabled ), PPU_TILE_SPR_CONTROL
 .ENDM
 
 ;============================================================================
