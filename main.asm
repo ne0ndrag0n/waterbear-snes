@@ -1,7 +1,7 @@
 ;== Include memorymap, header info, and SNES initialization routines
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
-.INCLUDE "ppu.asm"
+.INCLUDE "ppu/ppu.asm"
 
 ;========================
 ; Start

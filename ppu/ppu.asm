@@ -10,10 +10,9 @@
 .IFNDEF PPU_S
 .DEFINE PPU_S
 
-.INCLUDE "base.inc"
-.INCLUDE "ppu.inc"
-.INCLUDE "dma.inc"
-.INCLUDE "base.asm"
+.INCLUDE "ppu/ppu.inc"
+.INCLUDE "dma/dma.inc"
+.INCLUDE "base/base.asm"
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams

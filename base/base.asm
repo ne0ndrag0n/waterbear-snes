@@ -11,7 +11,7 @@
 .IFNDEF BASE_S
 .DEFINE BASE_S
 
-.INCLUDE "base.inc"
+.INCLUDE "base/base.inc"
 
 ;============================================================================
 ; StoreByte
