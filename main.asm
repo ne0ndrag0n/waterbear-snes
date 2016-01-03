@@ -2,6 +2,7 @@
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
 .INCLUDE "ppu/ppu.asm"
+.INCLUDE "sys/system.asm"
 
 .EQU	PalNum		$0000
 
