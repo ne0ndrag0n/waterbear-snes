@@ -3,9 +3,7 @@
 .INCLUDE "InitSNES.asm"
 .INCLUDE "ppu/ppu.asm"
 
-;========================
-; Start
-;========================
+.EQU	PalNum		$0000
 
 .BANK 0 SLOT 0
 .ORG 0
@@ -13,6 +11,7 @@
 
 Start:
         InitSNES            ; Init Snes :)
+
 
 forever:
         jmp forever
