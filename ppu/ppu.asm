@@ -168,6 +168,27 @@
 .ENDM
 
 ;============================================================================
+; PPU_SetDisplay
+;
+; Description: Sets the display bits on register $2100, for visibility and
+;			   brightness.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: enabled		-- TRUE/FALSE
+;	  brightness	-- Four-bit value that controls brightness of the display.
+;----------------------------------------------------------------------------
+; Modifies: A
+;----------------------------------------------------------------------------
+.MACRO PPU_SetDisplay ARGS enabled, brightness
+	.IF enabled == TRUE
+		lda #brightness
+	.ELSE
+		lda #( $80 | brightness )
+	.ENDIF
+	sta PPU_SCREEN_DISPLAY
+.ENDM
+
+;============================================================================
 ; PPU_LoadPalette - Macro that loads palette information into CGRAM
 ; Author: Ash, bazz, Neviksti, Marc
 ;----------------------------------------------------------------------------

@@ -11,4 +11,7 @@
 
 .define		System_INTERRUPTS_PORT		$4200
 
+.define		System_REGISTER_BYTE		0
+.define		System_REGISTER_WORD		1
+
 .ENDIF
