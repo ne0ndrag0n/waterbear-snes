@@ -245,6 +245,32 @@ PPU_DMAPalette:
 .ENDM
 
 ;============================================================================
+; PPU_LoadBlockToVRAMBytes -- Macro that simplifies calling LoadVRAM to copy
+; data to VRAM, using direct byte amount
+;----------------------------------------------------------------------------
+; In: sourceAddress -- 24 bit address of source data
+;     destination   -- VRAM address to write to (WORD address!!)
+;     bytes			-- The amount of bytes to copy.
+;----------------------------------------------------------------------------
+; Out: None
+;----------------------------------------------------------------------------
+; Modifies: A, X, Y
+;----------------------------------------------------------------------------
+;LoadBlockToVRAM SRC_ADDRESS, DEST, SIZE
+;   requires:  mem/A = 8 bit, X/Y = 16 bit
+.MACRO PPU_LoadBlockToVRAMBytes ARGS sourceAddress, destination, bytes
+    lda #$80
+    sta PPU_PORT_SETTINGS       			; Set VRAM transfer mode to word-access, increment by 1
+
+    ldx #destination         				; DEST
+    stx PPU_VRAM_ADDRESS	 				; $2116: Word address for accessing VRAM.
+    lda #:sourceAddress      				; SRCBANK
+    ldx #sourceAddress       				; SRCOFFSET
+    ldy #bytes							  	; SIZE
+    jsr PPU_LoadVRAM
+.ENDM
+
+;============================================================================
 ; PPU_LoadVRAM -- Load data into VRAM
 ;----------------------------------------------------------------------------
 ; In: A:X  -- points to the data

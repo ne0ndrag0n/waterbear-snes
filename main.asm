@@ -12,6 +12,12 @@
 Start:
         InitSNES            ; Init Snes :)
 
+		PPU_LoadPalette BG_Palette, 0, 14
+		PPU_LoadBlockToVRAMBytes Tiles, $0000, $0020
+
+		PPU_SetVRAMWriteParams TRUE, FALSE
+		PPU_SetVRAMAddress $0400
+		PPU_WriteVRAM FALSE, $01
 
 forever:
         jmp forever
