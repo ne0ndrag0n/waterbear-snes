@@ -14,7 +14,7 @@
 .INCLUDE "base/base.inc"
 
 ;============================================================================
-; StoreByte
+; StoreA
 ;
 ; Description: This macro outputs "stz" to the destination, if the value
 ;			   loaded into the "A" register is going to be zero. This saves
@@ -29,8 +29,8 @@
 ;----------------------------------------------------------------------------
 ; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO StoreByte ARGS regValue, dest
-	.IF regValue == BYTE_ZERO
+.MACRO StoreA ARGS regValue, dest
+	.IF regValue == ZERO
 		stz dest
 	.ELSE
 		lda #regValue
@@ -39,7 +39,7 @@
 .ENDM
 
 ;============================================================================
-; StoreWordX
+; StoreX
 ;
 ; Description: This macro outputs "stz" to the destination, if the value
 ;			   loaded into the "X" register is going to be zero.
@@ -52,8 +52,8 @@
 ;----------------------------------------------------------------------------
 ; Modifies: X
 ;----------------------------------------------------------------------------
-.MACRO StoreWordX ARGS regValue, dest
-	.IF regValue == WORD_ZERO
+.MACRO StoreX ARGS regValue, dest
+	.IF regValue == ZERO
 		stz dest
 	.ELSE
 		ldx #regValue

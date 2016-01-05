@@ -16,4 +16,6 @@
 .define		BYTE_ZERO	$00
 .define		WORD_ZERO	$0000
 
+.define		ZERO		0
+
 .ENDIF
