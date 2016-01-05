@@ -23,7 +23,6 @@ Start:
 		jsr SetupVideo
 
 		System_SetInterrupts TRUE, FALSE, FALSE, FALSE
-		clc
 
 main:
 		System_Stall 3
