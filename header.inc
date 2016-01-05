@@ -29,7 +29,7 @@
   COP EmptyHandler
   BRK EmptyHandler
   ABORT EmptyHandler
-  NMI EmptyHandler
+  NMI VBlank
   IRQ EmptyHandler
 .ENDNATIVEVECTOR
 

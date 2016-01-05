@@ -36,12 +36,15 @@ main:
 
 ;============================================================================
 VBlank:
-    rep #$10        ; X/Y=16 bits
-    sep #$20        ; A/mem=8 bit
+	rep #$10        			 ; X/Y=16 bits
+    sep #$20        			 ; A/mem=8 bit
 
-    stz $2115       ; Setup VRAM
-    ldx #$0400
-    stx $2116       ; Set VRAM address
+	; Setup VRAM
+    PPU_SetVRAMWriteParams FALSE, FALSE
+
+    ; Set VRAM address
+    PPU_SetVRAMAddress $0400
+
     lda PalNum
     sta $2119       ; Write to VRAM
 

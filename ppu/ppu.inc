@@ -49,10 +49,12 @@
 ; the next write
 ; Accepts 2 bytes
 .define		PPU_VRAM_ADDRESS		$2116
+.define		PPU_VRAM_ADDRESS_HIGH	$2117
 
 ; PPU VRAM Write Port
 ; Accepts 2 bytes
 .define		PPU_VRAM_DATA			$2118
+.define		PPU_VRAM_DATA_HIGH		$2119
 
 ; PPU Tile & Sprite Visibility Control
 ; Accepts 1 byte

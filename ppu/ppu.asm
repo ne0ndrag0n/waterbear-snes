@@ -55,15 +55,15 @@
 ;			   use DMA; for this, use the appropriate DMA function instead.
 ; Author: Ash
 ;----------------------------------------------------------------------------
-; In: word		--	If TRUE, writes a word (16-bit) to PPU_VRAM_DATA.
-;					If FALSE, writes a byte.
+; In: hiByte	--	If TRUE, writes to PPU_VRAM_DATA_HIGH
+;					If FALSE, writes to PPU_VRAM_DATA
 ;	  data		--	The data to be written
 ;----------------------------------------------------------------------------
-; Modifies: A or X depending on the value of "word".
+; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO PPU_WriteVRAM ARGS word, data
-	.IF word == TRUE
-		StoreX data, PPU_VRAM_DATA
+.MACRO PPU_WriteVRAM ARGS hiByte, data
+	.IF hiByte == TRUE
+		StoreA data, PPU_VRAM_DATA_HIGH
 	.ELSE
 		StoreA data, PPU_VRAM_DATA
 	.ENDIF
