@@ -20,12 +20,15 @@ Start:
 		PPU_SetVRAMAddress $0400
 		PPU_WriteVRAM FALSE, $01
 
+		PPU_SetVRAMAddress $0401
+		PPU_WriteVRAM FALSE, $01
+
 		jsr SetupVideo
 
 		System_SetInterrupts TRUE, FALSE, FALSE, FALSE
 
 main:
-		System_Stall 3
+		System_Stall 6
 		lda PalNum
 		clc
 		adc #$04
@@ -48,7 +51,7 @@ VBlank:
     lda PalNum
     sta $2119       ; Write to VRAM
 
-    lda $4210       ; Clear NMI flag
+    stz $4210       ; Clear NMI flag
 
     RTI
 ;============================================================================
