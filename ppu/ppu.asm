@@ -30,7 +30,7 @@
 .MACRO PPU_SetVRAMWriteParams ARGS incOnHigh, incRate
 	; top bit determines increment on high or low VRAM word.
 	; bottom two bits determine the increment rate
-	StoreA ( ( incOnHigh << 7 ) | incRate ), PPU_PORT_SETTINGS
+	StoreA ( ( incOnHigh << 7 ) | incRate ), PPU_PORT_SETTINGS, DIRECT
 .ENDM
 
 ;============================================================================
@@ -45,7 +45,7 @@
 ; Modifies: X
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetVRAMAddress ARGS address
-	StoreX address, PPU_VRAM_ADDRESS
+	StoreX address, PPU_VRAM_ADDRESS, DIRECT
 .ENDM
 
 ;============================================================================
@@ -61,11 +61,11 @@
 ;----------------------------------------------------------------------------
 ; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO PPU_WriteVRAM ARGS hiByte, data
+.MACRO PPU_WriteVRAM ARGS hiByte, data, addrMode
 	.IF hiByte == TRUE
-		StoreA data, PPU_VRAM_DATA_HIGH
+		StoreA data, PPU_VRAM_DATA_HIGH, addrMode
 	.ELSE
-		StoreA data, PPU_VRAM_DATA
+		StoreA data, PPU_VRAM_DATA, addrMode
 	.ENDIF
 .ENDM
 
@@ -87,7 +87,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetScreenMode ARGS screenMode, mode1BG3Highest, doubleTileBG1, doubleTileBG2, doubleTileBG3, doubleTileBG4
-	StoreA ( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode ), PPU_SCREEN_MODE
+	StoreA ( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode ), PPU_SCREEN_MODE, DIRECT
 .ENDM
 
 ;============================================================================
@@ -106,7 +106,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO	PPU_SetTileMapAddr ARGS tileMapOrigin, mapSize, bgPlane
-	StoreA ( ( tileMapOrigin << 2 ) | mapSize ), bgPlane
+	StoreA ( ( tileMapOrigin << 2 ) | mapSize ), bgPlane, DIRECT
 .ENDM
 
 ;============================================================================
@@ -129,16 +129,16 @@
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetCharAddr ARGS bgLayer, addr
 	.IF bgLayer == PPU_BG1
-		StoreA addr, PPU_CHAR_ADDR_BG12
+		StoreA addr, PPU_CHAR_ADDR_BG12, DIRECT
 	.ELSE
 		.IF bgLayer == PPU_BG2
-			StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG12
+			StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG12, DIRECT
 		.ELSE
 			.IF bgLayer == PPU_BG3
-				StoreA addr, PPU_CHAR_ADDR_BG34
+				StoreA addr, PPU_CHAR_ADDR_BG34, DIRECT
 			.ELSE
 				.IF bgLayer == PPU_BG4
-					StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG34
+					StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG34, DIRECT
 				.ELSE
 					.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
 					.FAIL
@@ -164,7 +164,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetSpriteAndTileLayers ARGS spritesEnabled, BG1Enabled, BG2Enabled, BG3Enabled, BG4Enabled
-	StoreA ( ( spritesEnabled << 4 ) | ( BG4Enabled << 3 ) | ( BG3Enabled << 2 ) | ( BG2Enabled << 1 ) | BG1Enabled ), PPU_TILE_SPR_CONTROL
+	StoreA ( ( spritesEnabled << 4 ) | ( BG4Enabled << 3 ) | ( BG3Enabled << 2 ) | ( BG2Enabled << 1 ) | BG1Enabled ), PPU_TILE_SPR_CONTROL, DIRECT
 .ENDM
 
 ;============================================================================

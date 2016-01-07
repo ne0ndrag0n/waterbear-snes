@@ -18,10 +18,10 @@ Start:
 
 		PPU_SetVRAMWriteParams TRUE, FALSE
 		PPU_SetVRAMAddress $0400
-		PPU_WriteVRAM FALSE, $01
+		PPU_WriteVRAM FALSE, $01, DIRECT
 
 		PPU_SetVRAMAddress $0401
-		PPU_WriteVRAM FALSE, $01
+		PPU_WriteVRAM FALSE, $01, DIRECT
 
 		jsr SetupVideo
 
@@ -39,8 +39,6 @@ main:
 
 ;============================================================================
 VBlank:
-	rep #$10        			 ; X/Y=16 bits
-    sep #$20        			 ; A/mem=8 bit
 
 	; Setup VRAM
     PPU_SetVRAMWriteParams FALSE, FALSE
@@ -48,8 +46,8 @@ VBlank:
     ; Set VRAM address
     PPU_SetVRAMAddress $0400
 
-    lda PalNum
-    sta $2119       ; Write to VRAM
+    ; Write to VRAM
+    PPU_WriteVRAM TRUE, PalNum, INDIRECT
 
     stz $4210       ; Clear NMI flag
 

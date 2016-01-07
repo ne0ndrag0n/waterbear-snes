@@ -26,7 +26,7 @@
 ; Modifies: A
 ;----------------------------------------------------------------------------
 .MACRO System_SetInterrupts ARGS nmiInt, vertical, horizontal, joypadInt
-	StoreA ( ( nmiInt << 7 ) | ( vertical << 5 ) | ( horizontal << 4 ) | joypadInt ), System_INTERRUPTS_PORT
+	StoreA ( ( nmiInt << 7 ) | ( vertical << 5 ) | ( horizontal << 4 ) | joypadInt ), System_INTERRUPTS_PORT, DIRECT
 .ENDM
 
 ;============================================================================

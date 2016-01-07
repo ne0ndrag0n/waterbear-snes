@@ -29,12 +29,17 @@
 ;----------------------------------------------------------------------------
 ; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO StoreA ARGS regValue, dest
-	.IF regValue == ZERO
-		stz dest
-	.ELSE
-		lda #regValue
+.MACRO StoreA ARGS regValue, dest, addrMode
+	.IF addrMode == INDIRECT
+		lda regValue
 		sta dest
+	.ELSE
+		.IF regValue == ZERO
+			stz dest
+		.ELSE
+			lda #regValue
+			sta dest
+		.ENDIF
 	.ENDIF
 .ENDM
 
@@ -52,12 +57,17 @@
 ;----------------------------------------------------------------------------
 ; Modifies: X
 ;----------------------------------------------------------------------------
-.MACRO StoreX ARGS regValue, dest
-	.IF regValue == ZERO
-		stz dest
-	.ELSE
-		ldx #regValue
+.MACRO StoreX ARGS regValue, dest, addrMode
+	.IF addrMode == INDIRECT
+		ldx regValue
 		stx dest
+	.ELSE
+		.IF regValue == ZERO
+			stz dest
+		.ELSE
+			ldx #regValue
+			stx dest
+		.ENDIF
 	.ENDIF
 .ENDM
 
