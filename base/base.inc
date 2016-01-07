@@ -18,4 +18,7 @@
 
 .define		ZERO		0
 
+.define		DIRECT		0
+.define		INDIRECT	1
+
 .ENDIF
