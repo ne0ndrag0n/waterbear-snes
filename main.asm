@@ -32,7 +32,7 @@ main:
 		lda PalNum
 		clc
 		adc #$04
-		and #$1C
+		and #$0C
 		sta PalNum
 
         jmp main
