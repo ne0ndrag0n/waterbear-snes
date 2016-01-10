@@ -189,6 +189,25 @@
 .ENDM
 
 ;============================================================================
+; PPU_FillTileMap
+;
+; Description: Fills specified tilemap.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: tileMapAddr	--	The address of the given tilemap.
+;	  originTile	--  The beginning index of the tile.
+;	  increment		--	If TRUE, increment tile by one after each tile.
+;	  useDMA		--	If TRUE, transfer using DMA.
+;	  forceVblank	--  Set to TRUE if you are not calling in vblank. This
+;						will disable the PPU, allowing a write to tilemap.
+;----------------------------------------------------------------------------
+; Modifies: A
+;----------------------------------------------------------------------------
+.MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, increment, useDMA, forceVblank
+
+.ENDM
+
+;============================================================================
 ; PPU_LoadPalette - Macro that loads palette information into CGRAM
 ; Author: Ash, bazz, Neviksti, Marc
 ;----------------------------------------------------------------------------
