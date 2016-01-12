@@ -196,6 +196,7 @@
 ;----------------------------------------------------------------------------
 ; In: tileMapAddr	--	The address of the given tilemap.
 ;	  originTile	--  The beginning index of the tile.
+;     numTiles		--  Number of tiles to write to tilemap.
 ;	  increment		--	If TRUE, increment tile by one after each tile.
 ;	  useDMA		--	If TRUE, transfer using DMA.
 ;	  forceVblank	--  Set to TRUE if you are not calling in vblank. This
@@ -203,8 +204,16 @@
 ;----------------------------------------------------------------------------
 ; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, increment, useDMA, forceVblank
+.MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, numTiles, increment, useDMA, forceVblank
+	.IF useDMA == TRUE
 
+	.ELSE
+		; Increment writing on the low byte by 1x1 tile (waterbear only
+		; supports 1x1 tile)
+		PPU_SetVRAMWriteParams FALSE, PPU_IncRate_1x1
+		PPU_SetVRAMAddress tileMapAddr
+
+	.ENDIF
 .ENDM
 
 ;============================================================================
