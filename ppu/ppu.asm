@@ -50,6 +50,27 @@
 .ENDM
 
 ;============================================================================
+; PPU_SetVRAMModeAddress
+;
+; Description: Sets the VRAM destination address of the next read/write
+;			   from/to PPU_VRAM_DATA ($2118). Does a concomitant set
+;			   of VRAMWriteParams.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: address	--	The 16-bit address to point the next VRAM operation to.
+;     incOnHigh -- PPU_IncOnHigh to increment on write of high VRAM word
+;				   $2119.
+;				   PPU_IncOnLow to increment on write of low VRAM word $2118.
+;     incRate	-- Increment rate (selectable via PPU_IncRate_xxx consts).
+;----------------------------------------------------------------------------
+; Modifies: A, X
+;----------------------------------------------------------------------------
+.MACRO PPU_SetVRAMModeAddress ARGS address, incOnHigh, incRate
+	PPU_SetVRAMWriteParams incOnHigh, incRate
+	PPU_SetVRAMAddress address, DIRECT
+.ENDM
+
+;============================================================================
 ; PPU_WriteVRAM
 ;
 ; Description: Writes to VRAM using PPU_VRAM_DATA. This function does NOT
@@ -213,15 +234,16 @@
 		; Use PPU_LoadBlockToVRAMBytes? or a twist on it
 	.ELSE
 		; Dunno why you wouldn't want to use DMA
+
+		; If not calling from vblank, force vblank
+		.IF forceVblank == TRUE
+			PPU_SetDisplay FALSE, $0
+		.ENDIF
+
 		; Increment writing on the low byte by 1x1 tile (waterbear macro
 		; only supports 1x1 tile)
-		PPU_SetVRAMWriteParams PPU_IncOnLow, PPU_IncRate_1x1
-
 		; Set the VRAM address to the BG address given in tileMapAddr
-		PPU_SetVRAMAddress tileMapAddr
-
-		; Clear carry for good measure
-		clc
+		PPU_SetVRAMModeAddress tileMapAddr, PPU_IncOnLow, PPU_IncRate_1x1
 
 		; Start by storing origin tile at ScRAM $0000
 		StoreA originTile, $0000, DIRECT
@@ -232,37 +254,72 @@
 		; Now store the maximum possible value at ScRAM $0001
 		StoreA numTiles, $0002, DIRECT
 
-		; If not calling from vblank, force vblank
-		.IF forceVblank == TRUE
-			PPU_SetDisplay FALSE, $0
+		.IF increment == TRUE
+			jsr PPU_fillTileMapNoDMAInc
+		.ELSE
+			jsr PPU_fillTileMapNoDMA
 		.ENDIF
-
-		writeTile:
-			; Write tilemap index located at $0000
-			; The hardware will handle increment of RAM address
-			; All we need to do is track where it stops.
-			StoreA $0000, PPU_VRAM_DATA, INDIRECT
-
-			; Increment counter
-			inc $0001
-
-			; Increment tile index (if increment is TRUE)
-			.IF increment == TRUE
-				inc $0000
-			.ENDIF
-
-			; This can probably be optimised with the "and" trick
-			lda $0001
-			cmp $0002
-			blt writeTile
 
 		; Re-enable the screen if not calling from vblank
 		.IF forceVblank == TRUE
 			PPU_SetDisplay TRUE, $F
 		.ENDIF
-
 	.ENDIF
 .ENDM
+
+; Make this less retarded with a macro or something
+PPU_fillTileMapNoDMA:
+	phb
+	php
+
+	; Clear carry for good measure
+	clc
+
+	writeTile:
+		; Write tilemap index located at $0000
+		; The hardware will handle increment of RAM address
+		; All we need to do is track where it stops.
+		StoreA $0000, PPU_VRAM_DATA, INDIRECT
+
+		; Increment counter
+		inc $0001
+
+		; This can probably be optimised with the "and" trick
+		lda $0001
+		cmp $0002
+		bcc writeTile
+
+    plp
+    plb ; THERE MAY BE MORE REGISTERS WE WANT TO PRESERVE!!
+	rts
+
+PPU_fillTileMapNoDMAInc:
+	phb
+	php
+
+	; Clear carry for good measure
+	clc
+
+	writeTileInc:
+		; Write tilemap index located at $0000
+		; The hardware will handle increment of RAM address
+		; All we need to do is track where it stops.
+		StoreA $0000, PPU_VRAM_DATA, INDIRECT
+
+		; Increment counter
+		inc $0001
+
+		; Increment tile index
+		inc $0000
+
+		; This can probably be optimised with the "and" trick
+		lda $0001
+		cmp $0002
+		bcc writeTileInc
+
+    plp
+    plb ; THERE MAY BE MORE REGISTERS WE WANT TO PRESERVE!!
+	rts
 
 ;============================================================================
 ; PPU_LoadPalette - Macro that loads palette information into CGRAM
