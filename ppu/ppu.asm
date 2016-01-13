@@ -21,8 +21,9 @@
 ;			   This is waterbear's first function written!
 ; Author: Ash
 ;----------------------------------------------------------------------------
-; In: incOnHigh -- TRUE to increment on write of high VRAM word $2119.
-;				-- FALSE to increment on write of low VRAM word $2118.
+; In: incOnHigh -- PPU_IncOnHigh to increment on write of high VRAM word
+;				   $2119.
+;				-- PPU_IncOnLow to increment on write of low VRAM word $2118.
 ;     incRate	-- Increment rate (selectable via PPU_IncRate_xxx consts).
 ;----------------------------------------------------------------------------
 ; Modifies: A
@@ -194,7 +195,7 @@
 ; Description: Fills specified tilemap.
 ; Author: Ash
 ;----------------------------------------------------------------------------
-; In: tileMapAddr	--	The address of the given tilemap.
+; In: tileMapAddr	--	The address of the given tilemap (BG1-4 address).
 ;	  originTile	--  The beginning index of the tile.
 ;     numTiles		--  Number of tiles to write to tilemap.
 ;	  increment		--	If TRUE, increment tile by one after each tile.
@@ -203,15 +204,62 @@
 ;						will disable the PPU, allowing a write to tilemap.
 ;----------------------------------------------------------------------------
 ; Modifies: A
+;			ScRAM $0000 to track origin tile
+;			ScRAM $0001 to track counter
+;			ScRAM $0002 to track maximum value of counter
 ;----------------------------------------------------------------------------
 .MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, numTiles, increment, useDMA, forceVblank
 	.IF useDMA == TRUE
-
+		; Use PPU_LoadBlockToVRAMBytes? or a twist on it
 	.ELSE
-		; Increment writing on the low byte by 1x1 tile (waterbear only
-		; supports 1x1 tile)
-		PPU_SetVRAMWriteParams FALSE, PPU_IncRate_1x1
+		; Dunno why you wouldn't want to use DMA
+		; Increment writing on the low byte by 1x1 tile (waterbear macro
+		; only supports 1x1 tile)
+		PPU_SetVRAMWriteParams PPU_IncOnLow, PPU_IncRate_1x1
+
+		; Set the VRAM address to the BG address given in tileMapAddr
 		PPU_SetVRAMAddress tileMapAddr
+
+		; Clear carry for good measure
+		clc
+
+		; Start by storing origin tile at ScRAM $0000
+		StoreA originTile, $0000, DIRECT
+
+		; Set counter value to zero
+		stz $0001
+
+		; Now store the maximum possible value at ScRAM $0001
+		StoreA numTiles, $0002, DIRECT
+
+		; If not calling from vblank, force vblank
+		.IF forceVblank == TRUE
+			PPU_SetDisplay FALSE, $0
+		.ENDIF
+
+		writeTile:
+			; Write tilemap index located at $0000
+			; The hardware will handle increment of RAM address
+			; All we need to do is track where it stops.
+			StoreA $0000, PPU_VRAM_DATA, INDIRECT
+
+			; Increment counter
+			inc $0001
+
+			; Increment tile index (if increment is TRUE)
+			.IF increment == TRUE
+				inc $0000
+			.ENDIF
+
+			; This can probably be optimised with the "and" trick
+			lda $0001
+			cmp $0002
+			blt writeTile
+
+		; Re-enable the screen if not calling from vblank
+		.IF forceVblank == TRUE
+			PPU_SetDisplay TRUE, $F
+		.ENDIF
 
 	.ENDIF
 .ENDM

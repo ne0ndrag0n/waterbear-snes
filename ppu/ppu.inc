@@ -86,5 +86,7 @@
 .define		PPU_TileMapSize_32x64	$02
 .define		PPU_TileMapSize_64x64	$03
 
+.define		PPU_IncOnLow			$00
+.define		PPU_IncOnHigh			$01
 
 .ENDIF

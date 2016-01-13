@@ -14,7 +14,7 @@ Start:
 		PPU_LoadPalette Demo16Palette, 0, 16
 		PPU_LoadBlockToVRAM Demo16Data, $0000, 3, 4
 
-		PPU_SetVRAMWriteParams FALSE, PPU_IncRate_1x1
+		PPU_SetVRAMWriteParams PPU_IncOnLow, PPU_IncRate_1x1
 
 		jsr SetupVideo
 
