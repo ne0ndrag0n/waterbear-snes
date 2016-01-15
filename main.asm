@@ -18,18 +18,8 @@ Start:
 
 		; Putting this after SetupVideo to test...
 
-		;PPU_SetDisplay FALSE, $0
-
-		;PPU_SetVRAMWriteParams PPU_IncOnLow, PPU_IncRate_1x1
-		;PPU_SetVRAMAddress $0400
-		;PPU_WriteVRAM FALSE, $01, DIRECT
-		;PPU_WriteVRAM FALSE, $01, DIRECT
-		;PPU_WriteVRAM FALSE, $02, DIRECT
-
-		;PPU_SetDisplay TRUE, $F
-
-		PPU_FillTileMap $0400, $01, 2, FALSE, FALSE, TRUE
-		PPU_FillTileMap $0402, $02, 5, FALSE, FALSE, TRUE
+		PPU_FillTileMap $0400, $01, 2, FALSE, TRUE
+		PPU_FillTileMap $0402, $02, 5, FALSE, TRUE
 
 main:
 

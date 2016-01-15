@@ -220,7 +220,6 @@
 ;	  originTile	--  The beginning index of the tile.
 ;     numTiles		--  Number of tiles to write to tilemap.
 ;	  increment		--	If TRUE, increment tile by one after each tile.
-;	  useDMA		--	If TRUE, transfer using DMA.
 ;	  forceVblank	--  Set to TRUE if you are not calling in vblank. This
 ;						will disable the PPU, allowing a write to tilemap.
 ;----------------------------------------------------------------------------
@@ -229,41 +228,36 @@
 ;			ScRAM $0001 to track counter
 ;			ScRAM $0002 to track maximum value of counter
 ;----------------------------------------------------------------------------
-.MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, numTiles, increment, useDMA, forceVblank
-	.IF useDMA == TRUE
-		; Use PPU_LoadBlockToVRAMBytes? or a twist on it
+.MACRO PPU_FillTileMap ARGS tileMapAddr, originTile, numTiles, increment, forceVblank
+
+	; If not calling from vblank, force vblank
+	.IF forceVblank == TRUE
+		PPU_SetDisplay FALSE, $0
+	.ENDIF
+
+	; Increment writing on the low byte by 1x1 tile (waterbear macro
+	; only supports 1x1 tile)
+	; Set the VRAM address to the BG address given in tileMapAddr
+	PPU_SetVRAMModeAddress tileMapAddr, PPU_IncOnLow, PPU_IncRate_1x1
+
+	; Start by storing origin tile at ScRAM $0000
+	StoreA originTile, $0000, DIRECT
+
+	; Set counter value to zero
+	stz $0001
+
+	; Now store the maximum possible value at ScRAM $0001
+	StoreA numTiles, $0002, DIRECT
+
+	.IF increment == TRUE
+		jsr PPU_fillTileMapNoDMAInc
 	.ELSE
-		; Dunno why you wouldn't want to use DMA
+		jsr PPU_fillTileMapNoDMA
+	.ENDIF
 
-		; If not calling from vblank, force vblank
-		.IF forceVblank == TRUE
-			PPU_SetDisplay FALSE, $0
-		.ENDIF
-
-		; Increment writing on the low byte by 1x1 tile (waterbear macro
-		; only supports 1x1 tile)
-		; Set the VRAM address to the BG address given in tileMapAddr
-		PPU_SetVRAMModeAddress tileMapAddr, PPU_IncOnLow, PPU_IncRate_1x1
-
-		; Start by storing origin tile at ScRAM $0000
-		StoreA originTile, $0000, DIRECT
-
-		; Set counter value to zero
-		stz $0001
-
-		; Now store the maximum possible value at ScRAM $0001
-		StoreA numTiles, $0002, DIRECT
-
-		.IF increment == TRUE
-			jsr PPU_fillTileMapNoDMAInc
-		.ELSE
-			jsr PPU_fillTileMapNoDMA
-		.ENDIF
-
-		; Re-enable the screen if not calling from vblank
-		.IF forceVblank == TRUE
-			PPU_SetDisplay TRUE, $F
-		.ENDIF
+	; Re-enable the screen if not calling from vblank
+	.IF forceVblank == TRUE
+		PPU_SetDisplay TRUE, $F
 	.ENDIF
 .ENDM
 
