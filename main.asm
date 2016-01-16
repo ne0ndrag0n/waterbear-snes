@@ -12,16 +12,19 @@ Start:
         InitSNES            ; Init Snes :)
 
 		PPU_LoadPalette Demo16Palette, 0, 16
-		;PPU_LoadBlockToVRAM Demo16Data, $0000, 3, 4
-
-		; Steamrolls over the tilemap
-		PPU_LoadBlockToVRAM FontData4BPP, $0000, 96, 4
+		PPU_LoadBlockToVRAM Demo16Data, $0000, 3, 4
 
 		jsr SetupVideo
 
-		; Putting this after SetupVideo to test...
+		PPU_SetVRAMModeAddress $0400, PPU_IncOnLow, PPU_IncRate_1x1
 
-		PPU_FillTileMap $0800, $01, 2, FALSE, TRUE
+		PPU_SetDisplay FALSE, $0
+
+		.REPT 10
+			PPU_WriteVRAM FALSE, $01, DIRECT
+		.ENDR
+
+		PPU_SetDisplay TRUE, $F
 
 main:
 
@@ -43,7 +46,7 @@ SetupVideo:
 
     PPU_SetScreenMode PPU_Mode_2, FALSE, FALSE, FALSE, FALSE, FALSE
 
-    PPU_SetTileMapAddr $02, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
+    PPU_SetTileMapAddr $01, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
 
     PPU_SetCharAddr PPU_BG1, $00
 
