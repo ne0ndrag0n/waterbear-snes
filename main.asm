@@ -39,7 +39,7 @@ VBlank:
 ;----------------------------------------------------------------------------
 SetupVideo:
 
-    PPU_SetScreenMode PPU_Mode_1, FALSE, FALSE, FALSE, FALSE, FALSE
+    PPU_SetScreenMode PPU_Mode_2, FALSE, FALSE, FALSE, FALSE, FALSE
 
     PPU_SetTileMapAddr $01, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
 
