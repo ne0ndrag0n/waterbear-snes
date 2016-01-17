@@ -49,7 +49,7 @@ SetupVideo:
 
     PPU_SetScreenMode PPU_PrimaryScreenMode, FALSE, FALSE, FALSE, FALSE, FALSE
 
-    PPU_SetTileMapAddr PPU_BG1TileMapIndex, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
+    PPU_SetTileMapAddr PPU_BG1TileMapIndex, PPU_PrimaryTileMapSize, PPU_TILEMAP_ADDR_BG1
 
     PPU_SetCharAddr PPU_BG1BG2, PPU_BG1CharacterSet, PPU_BG2CharacterSet
 

@@ -39,4 +39,8 @@
 ; @title PPU_PrimaryScreenMode
 ; @desc  Defines the primary screenmode used by your waterbear application; used in convience macros.
 .DEFINE		PPU_PrimaryScreenMode	PPU_Mode_1
+
+; @title PPU_PrimaryTileMapSize
+; @desc	 Defines the size of the scrolling planes (in 8x8 or 8x16 tiles)
+.DEFINE		PPU_PrimaryTileMapSize	PPU_TileMapSize_32x32
 .ENDIF
