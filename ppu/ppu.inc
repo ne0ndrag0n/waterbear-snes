@@ -67,6 +67,9 @@
 .define		PPU_BG3					$03
 .define		PPU_BG4					$04
 
+.define		PPU_BG1BG2				$00
+.define		PPU_BG3BG4				$01
+
 .define		PPU_IncRate_1x1			$00
 .define		PPU_IncRate_32x32		$01
 .define		PPU_IncRate_64x64		$02

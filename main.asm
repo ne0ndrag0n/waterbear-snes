@@ -8,8 +8,11 @@
 .ORG 0
 .SECTION "MainCode"
 
-.DEFINE		BG1TileMapIndex		$14
+.DEFINE		BG1TileMapIndex		$18
 .DEFINE		BG1TileMapAddr		( BG1TileMapIndex << 10 )
+
+.DEFINE		BG2TileMapIndex		$19
+.DEFINE		BG2TileMapAddr		( BG2TileMapIndex << 10 )
 
 Start:
         InitSNES            ; Init Snes :)
@@ -17,7 +20,7 @@ Start:
 		PPU_LoadPalette Demo16Palette, 0, 16
 
 		PPU_LoadBlockToVRAM FontData4BPP, $0000, 96, 4
-		PPU_LoadBlockToVRAM Demo16Data, $0600, 2, 4
+		PPU_LoadBlockToVRAM Demo16Data, $0800, 2, 4
 
 		jsr SetupVideo
 
@@ -55,7 +58,7 @@ SetupVideo:
 
     PPU_SetTileMapAddr BG1TileMapIndex, PPU_TileMapSize_32x32, PPU_TILEMAP_ADDR_BG1
 
-    PPU_SetCharAddr PPU_BG1, $00
+    PPU_SetCharAddr PPU_BG1BG2, $00, $01
 
     PPU_SetSpriteAndTileLayers FALSE, TRUE, FALSE, FALSE, FALSE
 

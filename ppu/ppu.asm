@@ -135,37 +135,25 @@
 ; PPU_SetCharAddr
 ;
 ; Description: Sets the origin addr of character data (the tiles themselves)
-; 			   for a background layer.
-;
-;			   This macro is a bit screwy for its side effects. Consider
-;			   using these operations directly.
+; 			   for a background layer. This is a package deal of two BGs.
 ; Author: Ash
 ;----------------------------------------------------------------------------
-; In: bgLayer		--	PPU_BG1 through PPU_BG4. These are set as package
-;						deals. BG1/BG2 and BG3/4 will be loaded on the same
-;						register; the one you do not specify will be zero.
-;	  addr			--	The VRAM address, in multiples of $1000. 1 is $1000,
-;						etc.
+; In: bgLayer		--	PPU_BG1BG2 or PPU_BG3BG4
+;	  addr1			--	The VRAM address, in multiples of $1000. 1 is $1000,
+;						etc. addr1 is for the first BG in the BG pair.
+;	  addr2			--	See above. addr2 is for the second BG in the BG pair.
 ;----------------------------------------------------------------------------
 ; Modifies: A
 ;----------------------------------------------------------------------------
-.MACRO PPU_SetCharAddr ARGS bgLayer, addr
-	.IF bgLayer == PPU_BG1
-		StoreA addr, PPU_CHAR_ADDR_BG12, DIRECT
+.MACRO PPU_SetCharAddr ARGS bgLayer, addr1, addr2
+	.IF bgLayer == PPU_BG1BG2
+		StoreA ( ( addr2 << 4 ) | addr1 ), PPU_CHAR_ADDR_BG12, DIRECT
 	.ELSE
-		.IF bgLayer == PPU_BG2
-			StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG12, DIRECT
+		.IF bgLayer = PPU_BG3BG4
+			StoreA ( ( addr2 << 4 ) | addr1 ), PPU_CHAR_ADDR_BG34, DIRECT
 		.ELSE
-			.IF bgLayer == PPU_BG3
-				StoreA addr, PPU_CHAR_ADDR_BG34, DIRECT
-			.ELSE
-				.IF bgLayer == PPU_BG4
-					StoreA ( addr << 4 ), PPU_CHAR_ADDR_BG34, DIRECT
-				.ELSE
-					.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
-					.FAIL
-				.ENDIF
-			.ENDIF
+			.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
+			.FAIL
 		.ENDIF
 	.ENDIF
 .ENDM
