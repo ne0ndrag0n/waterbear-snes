@@ -8,6 +8,8 @@
 ; PPU macros/functions.
 ; ===============================
 
+; ** DO NOT INCLUDE HEADER FILES IN USER SETTING FILES SUCH AS THIS ONE! **
+
 .IFNDEF PPU_U
 .DEFINE PPU_U
 
@@ -34,4 +36,7 @@
 ; @desc	 This defines the word-based address for a character set
 .DEFINE		PPU_BG2CharacterSet		$01
 
+; @title PPU_PrimaryScreenMode
+; @desc  Defines the primary screenmode used by your waterbear application; used in convience macros.
+.DEFINE		PPU_PrimaryScreenMode	PPU_Mode_1
 .ENDIF

@@ -9,14 +9,6 @@
 .IFNDEF PPU_H
 .DEFINE PPU_H
 
-.INCLUDE "ppu/user.inc"
-
-; === Computes addresses based on user settings ===
-.DEFINE		PPU_BG1TileMapAddr		( PPU_BG1TileMapIndex << 10 )
-.DEFINE		PPU_BG2TileMapAddr		( PPU_BG2TileMapIndex << 10 )
-.DEFINE		PPU_BG1CharacterAddr	( PPU_BG1CharacterSet << 12 ) / 2
-.DEFINE		PPU_BG2CharacterAddr	( PPU_BG2CharacterSet << 12 ) / 2
-
 ; PPU Screen Display Register
 ; Accepts 1 byte
 .define		PPU_SCREEN_DISPLAY		$2100
@@ -99,5 +91,17 @@
 
 .define		PPU_IncOnLow			$00
 .define		PPU_IncOnHigh			$01
+
+
+; === Computes addresses based on user settings ===
+
+; THIS MUST BE RIGHT HERE AT THE END OF PPU.INC, IN ORDER TO
+; USE ITS CONSTANTS IN USERSETTINGS! ***********************
+.INCLUDE "ppu/user.inc"
+
+.DEFINE		PPU_BG1TileMapAddr		( PPU_BG1TileMapIndex << 10 )
+.DEFINE		PPU_BG2TileMapAddr		( PPU_BG2TileMapIndex << 10 )
+.DEFINE		PPU_BG1CharacterAddr	( PPU_BG1CharacterSet << 12 ) / 2
+.DEFINE		PPU_BG2CharacterAddr	( PPU_BG2CharacterSet << 12 ) / 2
 
 .ENDIF
