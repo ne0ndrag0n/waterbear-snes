@@ -70,7 +70,7 @@ SetupVideo:
 .ORG 0
 .SECTION "TileData"
 
-	.INCLUDE "tiles.inc"
-	.INCLUDE "font.inc"
+	.INCLUDE "res/tilesets/testfaces.inc"
+	.INCLUDE "res/tilesets/charset.inc"
 
 .ENDS
