@@ -9,7 +9,7 @@
 .SECTION "MainCode"
 
 .DEFINE		BG1TileMapIndex		$14
-.DEFINE		BG1TIleMapAddr		( BG1TileMapIndex << 10 )
+.DEFINE		BG1TileMapAddr		( BG1TileMapIndex << 10 )
 
 Start:
         InitSNES            ; Init Snes :)
@@ -22,16 +22,16 @@ Start:
 		jsr SetupVideo
 
 		; Putting this after SetupVideo to test...
-		PPU_FillTileMap BG1TIleMapAddr, $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + 96, $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 2 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 3 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 4 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 5 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 6 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 7 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 8 ), $00, 96, TRUE, TRUE
-		PPU_FillTileMap BG1TIleMapAddr + ( 96 * 9 ), $00, 32, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr, $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + 96, $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 2 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 3 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 4 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 5 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 6 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 7 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 8 ), $00, 96, TRUE, TRUE
+		PPU_FillTileMap BG1TileMapAddr + ( 96 * 9 ), $00, 32, TRUE, TRUE
 
 main:
 
