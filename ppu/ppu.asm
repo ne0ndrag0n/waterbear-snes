@@ -213,7 +213,8 @@
 ;============================================================================
 ; PPU_FillTileMap
 ;
-; Description: Fills specified tilemap.
+; Description: Fills specified tilemap without using DMA. To use DMA, for
+;			   example, ROM:RAM transfer, use PPU_LoadBlockToVRAMBytes.
 ; Author: Ash
 ;----------------------------------------------------------------------------
 ; In: tileMapAddr	--	The address of the given tilemap (BG1-4 address).

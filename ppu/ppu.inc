@@ -89,4 +89,10 @@
 .define		PPU_IncOnLow			$00
 .define		PPU_IncOnHigh			$01
 
+; Compiler variables usable in your application
+.define		_PPU_BG1_TileMapAddr	0
+.define		_PPU_BG2_TileMapAddr	0
+.define		_PPU_BG3_TileMapAddr	0
+.define		_PPU_BG4_TileMapAddr	0
+
 .ENDIF
