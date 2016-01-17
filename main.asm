@@ -8,19 +8,24 @@
 .ORG 0
 .SECTION "MainCode"
 
+; DMA uses byte address I think...
 .DEFINE		BG1TileMapIndex		$18
 .DEFINE		BG1TileMapAddr		( BG1TileMapIndex << 10 )
-
 .DEFINE		BG2TileMapIndex		$19
 .DEFINE		BG2TileMapAddr		( BG2TileMapIndex << 10 )
+.DEFINE		BG1CharacterSet		$00
+.DEFINE		BG1CharacterAddr	( BG1CharacterSet << 12 ) / 2
+.DEFINE		BG2CharacterSet		$01
+.DEFINE		BG2CharacterAddr	( BG2CharacterSet << 12 ) / 2
+
 
 Start:
         InitSNES            ; Init Snes :)
 
 		PPU_LoadPalette Demo16Palette, 0, 16
 
-		PPU_LoadBlockToVRAM FontData4BPP, $0000, 96, 4
-		PPU_LoadBlockToVRAM Demo16Data, $0800, 2, 4
+		PPU_LoadBlockToVRAM FontData4BPP, BG1CharacterAddr, 96, 4
+		PPU_LoadBlockToVRAM Demo16Data, BG2CharacterAddr, 2, 4
 
 		jsr SetupVideo
 
