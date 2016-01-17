@@ -10,7 +10,8 @@
 .IFNDEF PPU_S
 .DEFINE PPU_S
 
-.INCLUDE "ppu/ppu.inc"
+.INCLUDE "ppu/ppu.inc" ; ppu/ppu.inc brings in usersettings for the PPU module
+					   ; (ppu/user.inc)
 .INCLUDE "dma/dma.inc"
 .INCLUDE "base/base.asm"
 
