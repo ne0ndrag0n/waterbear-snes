@@ -20,13 +20,13 @@
 ; @desc	 This is the word-based address (in multiples of $0400) for the BG1 tilemap.
 ; @minVal	$01
 ; @maxVal	$19		(A word-based address cannot meet or exceed $8000, or index of $20).
-.DEFINE		PPU_BG1TileMapIndex		$18
+.DEFINE		PPU_BG1TileMapIndex		$16
 
 ; @title PPU_BG2TileMapIndex
 ; @desc	 This is the word-based address (in multiples of $0400) for the BG2 tilemap.
 ; @minVal	$01
 ; @maxVal	$19		(A word-based address cannot meet or exceed $8000, or index of $20).
-.DEFINE		PPU_BG2TileMapIndex		$19
+.DEFINE		PPU_BG2TileMapIndex		$18
 
 ; @title PPU_BG1CharacterSet
 ; @desc	 This defines the word-based address for a character set
