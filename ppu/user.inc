@@ -42,5 +42,5 @@
 
 ; @title PPU_PrimaryTileMapSize
 ; @desc	 Defines the size of the scrolling planes (in 8x8 or 8x16 tiles)
-.DEFINE		PPU_PrimaryTileMapSize	PPU_TileMapSize_32x32
+.DEFINE		PPU_PrimaryTileMapSize	PPU_TileMapSize_64x32
 .ENDIF
