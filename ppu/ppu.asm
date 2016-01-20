@@ -108,9 +108,11 @@
 ;	  screenMode	-- 	The selected screen mode (PPU_Mode_X)
 ;----------------------------------------------------------------------------
 ; Modifies: A
+;			Waterbear Reserved Ram $0010
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetScreenMode ARGS screenMode, mode1BG3Highest, doubleTileBG1, doubleTileBG2, doubleTileBG3, doubleTileBG4
 	StoreA ( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode ), PPU_SCREEN_MODE, DIRECT
+	StoreA screenMode, WB_CURR_SCREEN_MODE, DIRECT
 .ENDM
 
 ;============================================================================

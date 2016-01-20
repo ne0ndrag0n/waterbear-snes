@@ -9,6 +9,8 @@
 .IFNDEF PPU_H
 .DEFINE PPU_H
 
+.define		WB_CURR_SCREEN_MODE		$0010
+
 ; PPU Screen Display Register
 ; Accepts 1 byte
 .define		PPU_SCREEN_DISPLAY		$2100
