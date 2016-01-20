@@ -10,6 +10,18 @@
 .DEFINE PPU_H
 
 .define		WB_CURR_SCREEN_MODE		$0010
+.define		WB_BG1_TM_INDEX			$0011
+.define		WB_BG1_CHAR_INDEX		$0012
+.define		WB_BG1_TM_SIZE			$0013
+.define		WB_BG2_TM_INDEX			$0014
+.define		WB_BG2_CHAR_INDEX		$0015
+.define		WB_BG2_TM_SIZE			$0016
+.define		WB_BG3_TM_INDEX			$0017
+.define		WB_BG3_CHAR_INDEX		$0018
+.define		WB_BG3_TM_SIZE			$0019
+.define		WB_BG4_TM_INDEX			$001A
+.define		WB_BG4_CHAR_INDEX		$001B
+.define		WB_BG4_TM_SIZE			$001C
 
 ; PPU Screen Display Register
 ; Accepts 1 byte

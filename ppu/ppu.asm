@@ -108,7 +108,7 @@
 ;	  screenMode	-- 	The selected screen mode (PPU_Mode_X)
 ;----------------------------------------------------------------------------
 ; Modifies: A
-;			Waterbear Reserved Ram $0010
+;			Waterbear Reserved RAM WB_CURR_SCREEN_MODE
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetScreenMode ARGS screenMode, mode1BG3Highest, doubleTileBG1, doubleTileBG2, doubleTileBG3, doubleTileBG4
 	StoreA ( ( doubleTileBG4 << 7 ) | ( doubleTileBG3 << 6 ) | ( doubleTileBG2 << 5 ) | ( doubleTileBG1 << 4 ) | ( mode1BG3Highest << 3 ) | screenMode ), PPU_SCREEN_MODE, DIRECT
@@ -129,9 +129,27 @@
 ;	  bgPlane		--  Specify which background this tilemap applies to.
 ;----------------------------------------------------------------------------
 ; Modifies: A
+;			Waterbear Reserved RAM WB_BG*_TM_INDEX, WB_BG*_TM_SIZE
 ;----------------------------------------------------------------------------
 .MACRO	PPU_SetTileMapAddr ARGS tileMapOrigin, mapSize, bgPlane
 	StoreA ( ( tileMapOrigin << 2 ) | mapSize ), bgPlane, DIRECT
+
+	.IF bgPlane == PPU_TILEMAP_ADDR_BG1
+		StoreA tileMapOrigin, WB_BG1_TM_INDEX, DIRECT
+		StoreA mapSize, WB_BG1_TM_SIZE, DIRECT
+	.ENDIF
+	.IF bgPlane == PPU_TILEMAP_ADDR_BG2
+		StoreA tileMapOrigin, WB_BG2_TM_INDEX, DIRECT
+		StoreA mapSize, WB_BG2_TM_SIZE, DIRECT
+	.ENDIF
+	.IF bgPlane == PPU_TILEMAP_ADDR_BG3
+		StoreA tileMapOrigin, WB_BG3_TM_INDEX, DIRECT
+		StoreA mapSize, WB_BG3_TM_SIZE, DIRECT
+	.ENDIF
+	.IF bgPlane == PPU_TILEMAP_ADDR_BG4
+		StoreA tileMapOrigin, WB_BG4_TM_INDEX, DIRECT
+		StoreA mapSize, WB_BG4_TM_SIZE, DIRECT
+	.ENDIF
 .ENDM
 
 ;============================================================================
@@ -147,13 +165,20 @@
 ;	  addr2			--	See above. addr2 is for the second BG in the BG pair.
 ;----------------------------------------------------------------------------
 ; Modifies: A
+;			Waterbear Reserved RAM WB_BG*_CHAR_INDEX
 ;----------------------------------------------------------------------------
 .MACRO PPU_SetCharAddr ARGS bgLayer, addr1, addr2
 	.IF bgLayer == PPU_BG1BG2
 		StoreA ( ( addr2 << 4 ) | addr1 ), PPU_CHAR_ADDR_BG12, DIRECT
+
+		StoreA addr1, WB_BG1_CHAR_INDEX, DIRECT
+		StoreA addr2, WB_BG2_CHAR_INDEX, DIRECT
 	.ELSE
 		.IF bgLayer = PPU_BG3BG4
 			StoreA ( ( addr2 << 4 ) | addr1 ), PPU_CHAR_ADDR_BG34, DIRECT
+
+			StoreA addr1, WB_BG3_CHAR_INDEX, DIRECT
+			StoreA addr2, WB_BG4_CHAR_INDEX, DIRECT
 		.ELSE
 			.PRINTT "Invalid bg layer specified for PPU_SetCharAddr!\n"
 			.FAIL
