@@ -72,6 +72,26 @@
 .ENDM
 
 ;============================================================================
+; PPU_DrawText
+;
+; Description: Places ASCII character tiles on the plane originating at
+;			   planeBaseAddr.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: stringAddr	--	16-bit address to a $00-terminated ASCII string.
+;	  x				--	X index in tilemap
+;	  y				--  Y index in tilemap
+;	  planeBaseAddr --  16-bit base address of plane in VRAM
+;	  planeMode		--	Plane mode (32x32, 64x32)
+;----------------------------------------------------------------------------
+; Modifies: A,X
+;			Various ScRAM locations
+;----------------------------------------------------------------------------
+.MACRO PPU_DrawText stringAddr, x, y, planeBaseAddr, planeMode
+
+.ENDM
+
+;============================================================================
 ; PPU_WriteVRAM
 ;
 ; Description: Writes to VRAM using PPU_VRAM_DATA. This function does NOT
