@@ -14,4 +14,7 @@
 .define		System_REGISTER_BYTE		0
 .define		System_REGISTER_WORD		1
 
+.define		System_INDEX_SIZE			$10
+.define		System_ACCUMULATOR_SIZE		$20
+
 .ENDIF

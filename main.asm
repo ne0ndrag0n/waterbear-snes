@@ -35,6 +35,9 @@ main:
 
 ;============================================================================
 VBlank:
+	; These need a way to preserve the existing status
+	;System_SetAccumulatorSize 	System_REGISTER_WORD
+	;System_SetIndexSize       	System_REGISTER_WORD
     RTI
 ;============================================================================
 

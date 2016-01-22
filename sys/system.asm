@@ -45,4 +45,40 @@
 	.ENDR
 .ENDM
 
+;============================================================================
+; System_SetAccumulatorSize
+;
+; Description: Sets the accumulator size to 8 (byte) or 16 (word) bits.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: size			--	System_REGISTER_BYTE or System_REGISTER_WORD
+;----------------------------------------------------------------------------
+.MACRO System_SetAccumulatorSize ARGS size
+	.IF size == System_REGISTER_BYTE
+		sep #System_ACCUMULATOR_SIZE
+	.ENDIF
+
+	.IF size == System_REGISTER_WORD
+		rep #System_ACCUMULATOR_SIZE
+	.ENDIF
+.ENDM
+
+;============================================================================
+; System_SetIndexSize
+;
+; Description: Sets the index register size to 8 (byte) or 16 (word) bits.
+; Author: Ash
+;----------------------------------------------------------------------------
+; In: size			--	System_REGISTER_BYTE or System_REGISTER_WORD
+;----------------------------------------------------------------------------
+.MACRO System_SetIndexSize ARGS size
+	.IF size == System_REGISTER_BYTE
+		sep #System_INDEX_SIZE
+	.ENDIF
+
+	.IF size == System_REGISTER_WORD
+		rep #System_INDEX_SIZE
+	.ENDIF
+.ENDM
+
 .ENDIF

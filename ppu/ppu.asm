@@ -14,6 +14,7 @@
 					   ; (ppu/user.inc)
 .INCLUDE "dma/dma.inc"
 .INCLUDE "base/base.asm"
+.INCLUDE "sys/system.asm"
 
 ;============================================================================
 ; PPU_SetVRAMWriteParams
@@ -82,22 +83,20 @@
 ;	  x				--	X index in tilemap
 ;	  y				--  Y index in tilemap
 ;	  planeBaseAddr --  16-bit base address of plane in VRAM.
-;	  charsetAddr	--	16-bit addr where ASCII character 32/$20 starts in
+;	  charsetIndex	--	Index where ASCII character 32/$20 starts in
 ;						your plane's character set.
 ;	  planeMode		--	Plane mode (32x32, 64x32)
 ;----------------------------------------------------------------------------
 ; Modifies: A,X
 ;			Various ScRAM locations
 ;----------------------------------------------------------------------------
-.MACRO PPU_DrawText stringAddr, x, y, planeBaseAddr, charsetAddr, planeMode
+.MACRO PPU_DrawText stringAddr, x, y, planeBaseAddr, charsetIndex, planeMode
 	StoreX stringAddr, $0000, DIRECT
 	StoreA x, $0002, DIRECT
 	StoreA y, $0003, DIRECT
 	StoreX planeBaseAddr, $0004, DIRECT
-	StoreX charsetAddr, $0006, DIRECT
-	StoreA planeMode, $0008, DIRECT
-	;counter
-	stz $0009
+	StoreA charsetIndex, $0006, DIRECT
+	StoreA planeMode, $0007, DIRECT
 	jsr PPU_drawText
 .ENDM
 
@@ -105,6 +104,13 @@ PPU_drawText:
 	phb
 	php
 
+	; Switch into 16/16 bit mode (A 16-bit, X 16-bit)
+	System_SetAccumulatorSize 	System_REGISTER_WORD
+	System_SetIndexSize       	System_REGISTER_WORD
+
+	; X will keep track of what letter we're on
+	stz $0008
+	ldx $0008
 
 
     plp
