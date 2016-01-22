@@ -43,4 +43,13 @@
 ; @title PPU_PrimaryTileMapSize
 ; @desc	 Defines the size of the scrolling planes (in 8x8 or 8x16 tiles)
 .DEFINE		PPU_PrimaryTileMapSize	PPU_TileMapSize_64x32
+
+
+; === Computes addresses based on user settings ===
+.DEFINE		PPU_BG1TileMapAddr		( PPU_BG1TileMapIndex << 10 )
+.DEFINE		PPU_BG2TileMapAddr		( PPU_BG2TileMapIndex << 10 )
+.DEFINE		PPU_BG1CharacterAddr	( PPU_BG1CharacterSet << 12 ) / 2
+.DEFINE		PPU_BG2CharacterAddr	( PPU_BG2CharacterSet << 12 ) / 2
+; =================================================
+
 .ENDIF
