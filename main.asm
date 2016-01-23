@@ -35,9 +35,14 @@ main:
 
 ;============================================================================
 VBlank:
-	; These need a way to preserve the existing status
-	;System_SetAccumulatorSize 	System_REGISTER_WORD
-	;System_SetIndexSize       	System_REGISTER_WORD
+	phb
+	php
+
+	System_SetAccumulatorSize 	System_REGISTER_BYTE
+	System_SetIndexSize       	System_REGISTER_WORD
+
+    plp
+    plb
     RTI
 ;============================================================================
 
