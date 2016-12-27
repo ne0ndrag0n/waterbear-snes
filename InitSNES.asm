@@ -27,7 +27,7 @@
 
 ;----------------------------------------------------------------------------
 
-.BANK 0 SLOT 0
+.BANK 0
 .ORG 0
 .SECTION "InitializeSNESCode" FORCE
 

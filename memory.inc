@@ -1,31 +1,41 @@
 ;==============================================================================
 ; WaterBear SNES Development Kit
 ;
-; FILE: system.inc
-; DESCRIPTION: System-level shit
+; FILE: memory.inc
+; DESCRIPTION: Specifies memory map
 ; (c) 2016-2017 Neon Dragon Enterprises (ne0ndrag0n)
 ;==============================================================================
-.IFNDEF SYSTEM
-.DEFINE SYSTEM
+.IFNDEF MEMORY
+.DEFINE MEMORY
 
-.INCLUDE "memory.inc"
+.INCLUDE "header.inc"
 
-.MACRO Set_A_16Bit
-  rep #%00100000
-.ENDM
+.RAMSECTION "ZeroPage" SLOT 0
+	BSNESDebugTarget DB
+.ENDS
 
-.MACRO Set_A_8Bit
-  sep #%00100000
-.ENDM
+.RAMSECTION "NonZeroPage" SLOT 11
+	VBlankFunctionPointer DW
+	VBlankDemoDestination1 DW
+.ENDS
+
+; ======
+; Need to switch banks to use these
+; ======
+.DEFINE SRAM_Bank	$FE
+.RAMSECTION "SRAM" SLOT 12
+	SRAMTest DW
+.ENDS
 
 ;==============================================================================
 ; Stage a function to be called once on VBlank.
 ; Modifies: A, Status Regs
+; A - 8-bit
 ;==============================================================================
-.MACRO Stage_VBlank ARGS function
-  Set_A_16Bit
-  lda #function.w
-  sta VBlankFunctionPointer.w
+.MACRO ChangeRAMBank ARGS Byte
+  lda #Byte
+  pha
+  plb
 .ENDM
 
 .ENDIF

@@ -8,12 +8,13 @@
 .IFNDEF DEBUG
 .DEFINE DEBUG
 
-.DEFINE     Debug_Status_Register     $0000
+.INCLUDE "memory.inc"
+
 .DEFINE     Debug_Status_Breakpoint   $B0
 
 .MACRO Debugger
   lda #Debug_Status_Breakpoint
-  sta Debug_Status_Register
+  sta BSNESDebugTarget
 .ENDM
 
 .ENDIF
