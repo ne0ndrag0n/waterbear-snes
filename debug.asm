@@ -1,14 +1,14 @@
 ;==============================================================================
 ; WaterBear SNES Development Kit
 ;
-; FILE: debug.inc
+; FILE: debug.asm
 ; DESCRIPTION: P-register flag constants
 ; (c) 2016-2017 Neon Dragon Enterprises (ne0ndrag0n)
 ;==============================================================================
 .IFNDEF DEBUG
 .DEFINE DEBUG
 
-.INCLUDE "memory.inc"
+.INCLUDE "memory.asm"
 
 .DEFINE     Debug_Status_Breakpoint   $B0
 

@@ -20,10 +20,10 @@
   SLOT 10 $8000 $8000           ; LoROM Cartridge ROM. This is the actual cartridge data.
 
   ; Custom slots for our use
-  ; Non-zeropage unpaged RAM
-  SLOT 11 $0100 $1F00
-  ; Banks $FE and $FF
-  SLOT 12 $0000 $8000           ; SRAM: Use with BANK $FE/$FF
+
+  SLOT 11 $0000 $00FF           ; All zero-page RAM. Use with zero-page instructions.
+  SLOT 12 $0000 $FFFF           ; All non-zeropage extended RAM, banks $7E and $7F
+  SLOT 13 $0000 $8000           ; SRAM, banks $FE and $FF
 .ENDME
 
 .ROMBANKSIZE $8000              ; Every ROM bank is 32 KBytes in size

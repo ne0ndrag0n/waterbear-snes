@@ -1,7 +1,7 @@
 ;==============================================================================
 ; WaterBear SNES Development Kit
 ;
-; FILE: memory.inc
+; FILE: memory.asm
 ; DESCRIPTION: Specifies memory map
 ; (c) 2016-2017 Neon Dragon Enterprises (ne0ndrag0n)
 ;==============================================================================
@@ -10,21 +10,18 @@
 
 .INCLUDE "header.inc"
 
-.RAMSECTION "ZeroPage" SLOT 0
+.RAMSECTION "ZeroPage" SLOT 11
 	BSNESDebugTarget DB
 .ENDS
 
-.RAMSECTION "NonZeroPage" SLOT 11
+.DEFINE WramPage1 $7E
+.RAMSECTION "WRAM" BANK 0 SLOT 12
 	VBlankFunctionPointer DW
 	VBlankDemoDestination1 DW
 .ENDS
 
-; ======
-; Need to switch banks to use these
-; ======
-.DEFINE SRAM_Bank	$FE
-.RAMSECTION "SRAM" SLOT 12
-	SRAMTest DW
+.RAMSECTION "PPU2" SLOT 7
+	CounterEnable DW
 .ENDS
 
 ;==============================================================================

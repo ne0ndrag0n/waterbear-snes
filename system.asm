@@ -1,14 +1,14 @@
 ;==============================================================================
 ; WaterBear SNES Development Kit
 ;
-; FILE: system.inc
+; FILE: system.asm
 ; DESCRIPTION: System-level shit
 ; (c) 2016-2017 Neon Dragon Enterprises (ne0ndrag0n)
 ;==============================================================================
 .IFNDEF SYSTEM
 .DEFINE SYSTEM
 
-.INCLUDE "memory.inc"
+.INCLUDE "memory.asm"
 
 .MACRO Set_A_16Bit
   rep #%00100000
@@ -18,14 +18,5 @@
   sep #%00100000
 .ENDM
 
-;==============================================================================
-; Stage a function to be called once on VBlank.
-; Modifies: A, Status Regs
-;==============================================================================
-.MACRO Stage_VBlank ARGS function
-  Set_A_16Bit
-  lda #function.w
-  sta VBlankFunctionPointer.w
-.ENDM
 
 .ENDIF

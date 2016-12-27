@@ -1,9 +1,10 @@
 ;== Include memorymap, header info, and SNES initialization routines
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
-.INCLUDE "debug.inc"
-.INCLUDE "system.inc"
-.INCLUDE "memory.inc"
+.INCLUDE "debug.asm"
+.INCLUDE "system.asm"
+.INCLUDE "memory.asm"
+.INCLUDE "vblank.asm"
 
 .BANK 0
 .ORG 0
@@ -15,7 +16,7 @@ Start:
 				Stage_VBlank VBlank_Dynamic_Demo
 
 				lda #%10000000
-				sta $4200				; enable the vblank
+				sta CounterEnable.w	; enable the vblank
 
 main:
         jmp main
@@ -41,7 +42,7 @@ Handler:
 VBlank_Finally:
 	; After a function is called, set it to null so it doesn't get called again on next VBlank.
 	Set_A_16Bit
-	lda.w #$0000
+	lda #$0000
 	sta VBlankFunctionPointer.w ; Rip this shit down on the way out
 
 VBlank_Exit:
@@ -50,13 +51,6 @@ VBlank_Exit:
 	pla
   RTI
 ;==============================================================================
-
-;==============================================================================
-; load $DEAD to $0010 as a demo of vblank dynamic dispatch
-VBlank_Dynamic_Demo:
-	lda #$0BB0
-	sta VBlankDemoDestination1.w
-	jmp VBlank_Finally
 
 .ENDS
 

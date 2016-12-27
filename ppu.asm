@@ -1,7 +1,7 @@
 ;==============================================================================
 ; WaterBear SNES Development Kit
 ;
-; FILE: ppu.inc
+; FILE: ppu.asm
 ; DESCRIPTION: PPU-specific routines and constants
 ; (c) 2016-2017 Neon Dragon Enterprises (ne0ndrag0n)
 ;==============================================================================
