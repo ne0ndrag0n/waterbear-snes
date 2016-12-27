@@ -50,4 +50,7 @@ EmptyHandler:
 .ENDS
 
 .EMPTYFILL $00
+
+.DEFINE TRUE $01.b
+.DEFINE FALSE $00.b
 ;---------------------------------- END -------------------------------------
