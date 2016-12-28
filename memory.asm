@@ -10,19 +10,8 @@
 
 .INCLUDE "header.inc"
 
-.RAMSECTION "ZeroPage" SLOT 11
-	BSNESDebugTarget DB
-.ENDS
-
+.DEFINE ZeroPage $00
 .DEFINE WramPage1 $7E
-.RAMSECTION "WRAM" BANK 0 SLOT 12
-	VBlankFunctionPointer DW
-	VBlankDemoDestination1 DW
-.ENDS
-
-.RAMSECTION "PPU2" SLOT 7
-	CounterEnable DW
-.ENDS
 
 ;==============================================================================
 ; Stage a function to be called once on VBlank.

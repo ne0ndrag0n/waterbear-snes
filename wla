@@ -4,7 +4,7 @@ echo '[objects]' > temp
 echo $1.o >> temp
 
 wla-65816 $1.asm
-wlalink -v temp $1.smc
+wlalink -v -s temp $1.smc
 
 rm $1.o
 rm temp

@@ -1,7 +1,6 @@
 ;== Include memorymap, header info, and SNES initialization routines
 .INCLUDE "header.inc"
 .INCLUDE "InitSNES.asm"
-.INCLUDE "debug.asm"
 .INCLUDE "system.asm"
 .INCLUDE "memory.asm"
 .INCLUDE "vblank.asm"
@@ -16,7 +15,7 @@ Start:
 				Stage_VBlank VBlank_Dynamic_Demo
 
 				lda #%10000000
-				sta CounterEnable.w	; enable the vblank
+				sta Register_CounterEnable.w	; enable the vblank
 
 main:
         jmp main
@@ -29,6 +28,7 @@ VBlank:
 	php
 	phb
 
+	; Your VBlank function will be called with 16-bit A
 	Set_A_16Bit
 	lda VBlankFunctionPointer.w
 	cmp #$0000

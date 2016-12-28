@@ -18,5 +18,10 @@
   sep #%00100000
 .ENDM
 
+.MACRO Debugger
+  wdm ; use this to trigger the debugger in bsnes
+  nop ; wdm eats the next byte - should read wdm #$ea
+.ENDM
+
 
 .ENDIF

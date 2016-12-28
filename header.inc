@@ -3,27 +3,11 @@
 
 ;==LoRom==
 .MEMORYMAP
-  DEFAULTSLOT 10
-
-  ; Slots as defined by LoRom
-  ; Banks 00-3F
-  SLOT 0 $0000 $2000            ; LowRAM
-  SLOT 1 $2000 $0100            ; Unused
-  SLOT 2 $2100 $0100            ; PPU1, APU, Hardware Registers
-  SLOT 3 $2200 $0E00            ; Unused
-  SLOT 4 $3000 $1000            ; DSP, SuperFX, Hardware Registers
-  SLOT 5 $4000 $0100            ; Old Style Joypad Registers
-  SLOT 6 $4100 $0100            ; Unused
-  SLOT 7 $4200 $0300            ; DMA, PPU2, Hardware Registers
-  SLOT 8 $4500 $1B00            ; Unused
-  SLOT 9 $6000 $2000            ; Enhancement Chips (SD2SNES Verilog modules)
-  SLOT 10 $8000 $8000           ; LoROM Cartridge ROM. This is the actual cartridge data.
-
-  ; Custom slots for our use
-
-  SLOT 11 $0000 $00FF           ; All zero-page RAM. Use with zero-page instructions.
-  SLOT 12 $0000 $FFFF           ; All non-zeropage extended RAM, banks $7E and $7F
-  SLOT 13 $0000 $8000           ; SRAM, banks $FE and $FF
+  DEFAULTSLOT 0
+  SLOT 0 $8000 $8000                ; LoROM Cartridge ROM. This is the actual cartridge data.
+  ; Additional, custom slots for placement of WLA-DX variables
+  SLOT 1 $0010 $1FF6           ; RAM past first 16 bytes (those are used for arguments)
+  SLOT 2 $0000 $8000           ; SRAM, banks $FE and $FF ONLY
 .ENDME
 
 .ROMBANKSIZE $8000              ; Every ROM bank is 32 KBytes in size

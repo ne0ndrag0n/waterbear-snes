@@ -8,12 +8,19 @@
 .IFNDEF VBLANK_HANDLERS
 .DEFINE VBLANK_HANDLERS
 
-.INCLUDE "memory.asm"
 .INCLUDE "system.asm"
+
+.DEFINE   Register_CounterEnable    $4200
+
+; VBlank-relevant function handlers for zero page
+.RAMSECTION "WRAM" SLOT 1
+	VBlankFunctionPointer DW
+  VBlankDemoDestination1 DW
+.ENDS
 
 ;==============================================================================
 ; Stage a function to be called once on VBlank.
-; Modifies: A, Status Regs
+; Modifies: A, S
 ;==============================================================================
 .MACRO Stage_VBlank ARGS function
   Set_A_16Bit
@@ -30,10 +37,9 @@
   wai
 .ENDM
 
-
 .BANK 0
 .ORG 0
-.SECTION "VblankHandlers"
+.SECTION "VblankHandlers" SEMIFREE
 
 ;==============================================================================
 ; load $DEAD to $0010 as a demo of vblank dynamic dispatch
