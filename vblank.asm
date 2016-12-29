@@ -15,6 +15,7 @@
 
 ; VBlank-relevant function handlers for zero page
 .RAMSECTION "WRAM" SLOT 1
+	VBlankStatus DB
 	VBlankFunctionPointer DW
   VBlankDemoDestination1 DW
 .ENDS

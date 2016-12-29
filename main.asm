@@ -12,10 +12,10 @@
 Start:
         InitSNES            ; Init Snes :)
 
-				Stage_VBlank LoadDemoPalette
-
 				lda #%10000000
 				sta Register_CounterEnable.w	; enable the vblank
+
+				Stage_VBlank LoadDemoPalette
 
 main:
         jmp main
@@ -28,11 +28,19 @@ VBlank:
 	php
 	phb
 
+	Set_A_8Bit
+	lda VBlankStatus
+	cmp #TRUE
+	beq VBlank_Exit			; Check if an existing VBlank was in progress; if so, don't fire another one!
+
+	lda #TRUE
+	sta VBlankStatus		; Don't allow VBlanks to crash into each other
+
 	; Your VBlank function will be called with 16-bit A
 	Set_A_16Bit
 	lda VBlankFunctionPointer.w
 	cmp #$0000
-	beq VBlank_Exit
+	beq VBlank_Set_Finished
 
 Handler:
 	; Branch to this function pointer as a subroutine, then clear out the pointer.
@@ -40,10 +48,12 @@ Handler:
 	jmp (VBlankFunctionPointer)
 
 VBlank_Finally:
-	; After a function is called, set it to null so it doesn't get called again on next VBlank.
 	Set_A_16Bit
-	lda #$0000
-	sta VBlankFunctionPointer.w ; Rip this shit down on the way out
+	stz VBlankFunctionPointer 	; After a function is called, set it to null so it doesn't get called again on next VBlank.
+
+VBlank_Set_Finished:
+	Set_A_8Bit
+	stz VBlankStatus						; A VBlank is no longer in progress
 
 VBlank_Exit:
 	plb
