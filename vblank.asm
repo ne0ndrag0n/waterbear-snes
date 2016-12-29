@@ -9,6 +9,7 @@
 .DEFINE VBLANK_HANDLERS
 
 .INCLUDE "system.asm"
+.INCLUDE "ppu.asm"
 
 .DEFINE   Register_CounterEnable    $4200
 
@@ -42,10 +43,16 @@
 .SECTION "VblankHandlers" SEMIFREE
 
 ;==============================================================================
-; load $DEAD to $0010 as a demo of vblank dynamic dispatch
+; Load a specific palette during VBlank
 ;==============================================================================
-VBlank_Dynamic_Demo:
-	lda #$0BB0.w
+LoadDemoPalette:
+	Set_A_8Bit
+	Set_XY_16Bit
+	LoadPalette DemoPalette, 0, 4
+
+	; just a little confirmation we're done
+	Set_A_16Bit
+	lda #$C7FA.w
 	sta VBlankDemoDestination1.w
 	jmp VBlank_Finally
 

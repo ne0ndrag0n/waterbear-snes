@@ -18,6 +18,14 @@
   sep #%00100000
 .ENDM
 
+.MACRO Set_XY_16Bit
+  rep #%00010000
+.ENDM
+
+.MACRO Set_XY_8Bit
+  sep #%00010000
+.ENDM
+
 .MACRO Debugger
   wdm ; use this to trigger the debugger in bsnes
   nop ; wdm eats the next byte - should read wdm #$ea

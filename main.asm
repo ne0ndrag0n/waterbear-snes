@@ -12,7 +12,7 @@
 Start:
         InitSNES            ; Init Snes :)
 
-				Stage_VBlank VBlank_Dynamic_Demo
+				Stage_VBlank LoadDemoPalette
 
 				lda #%10000000
 				sta Register_CounterEnable.w	; enable the vblank
@@ -61,11 +61,11 @@ VBlank_Exit:
 
 ; 2bpp
 
-TileData:
+DemoTiles:
     .db $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00, $00
     .db $00, $FF, $00, $FF, $FF, $00, $FF, $FF, $FF, $FF, $FF, $00, $00, $FF, $00, $FF
 
-Palette:
+DemoPalette:
     .db $00, $00, $1F, $42, $E0, $7F, $FF, $7F
 
 ; alternate reality game/story aspects for adventerous ROM-hacking players
