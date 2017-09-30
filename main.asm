@@ -44,7 +44,10 @@ VBlank:
 
 Handler:
 	; Branch to this function pointer as a subroutine, then clear out the pointer.
-	; It's up to you to "jmp VBlank_Finally" when you're all done.
+	Debugger
+	lda #VBlank_Finally.w
+	dec A
+	pha
 	jmp (VBlankFunctionPointer)
 
 VBlank_Finally:
