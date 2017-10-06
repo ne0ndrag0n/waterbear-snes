@@ -52,7 +52,6 @@ LoadDemoPalette:
 	LoadPalette DemoPalette, 0, 4
 
 	; just a little confirmation we're done
-	Debugger
 	Set_A_16Bit
 	lda #$C7FA.w
 	sta VBlankDemoDestination1.w

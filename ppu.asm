@@ -45,7 +45,36 @@
   lda #( ( disabled << 7 ) | brightness )
 .ENDM
 
-.ENDIF
+;==============================================================================
+; LoadBlockToVRAM - Load block to VRAM
+;==============================================================================
+.MACRO LoadBlockToVRAM ARGS SrcAddr, Dest, Size
+  Debugger
+
+  php
+
+  Set_A_8Bit
+  Set_XY_16Bit
+
+  pea Size
+  pea Dest
+  pea SrcAddr
+
+  lda #:SrcAddr
+  pha
+
+  jsr LoadBlockToVRAM_
+
+  Set_A_8Bit
+  pla
+
+  Set_A_16Bit
+  pla
+  pla
+  pla
+
+  plp
+.ENDM
 
 .BANK 0
 .ORG 0
@@ -78,4 +107,39 @@ LoadDMAPalette:
   plb
   rts
 
+;==============================================================================
+; Load data into VRAM
+; Args: 3 bank b, 4 addr w, 6 dest w, 8 size w
+;==============================================================================
+LoadBlockToVRAM_:
+  Set_A_16Bit
+  lda 6, S
+  sta $2116       ; Initial VRAM word
+
+  lda 4, S
+  sta $4302       ; Store source address
+
+  lda 8, S
+  sta $4305       ; Store size
+
+  Set_A_8Bit
+  lda #%10000000
+  sta $2115       ; Set VRAM transfer mode to word access, incremented by 1
+
+  lda 3, S
+  sta $4304       ; Store source bank
+
+  lda #%00000001
+  sta $4300       ; DMA mode: Word, normal increment
+
+  lda #$18
+  sta $4301       ; Destination address: $2118
+
+  lda #TRUE
+  sta $420B       ; Kickoff DMA
+
+  rts
+
 .ENDS
+
+.ENDIF

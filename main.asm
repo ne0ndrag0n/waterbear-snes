@@ -15,6 +15,8 @@ Start:
 				lda #%10000000
 				sta Register_CounterEnable.w	; enable the vblank
 
+        LoadBlockToVRAM DemoTiles, $0000, $20
+
 				Stage_VBlank LoadDemoPalette
 
 main:
@@ -44,7 +46,6 @@ VBlank:
 
 Handler:
 	; Branch to this function pointer as a subroutine, then clear out the pointer.
-	Debugger
 	lda #VBlank_Finally.w
 	dec A
 	pha
